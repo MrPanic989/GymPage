@@ -1,0 +1,228 @@
+* {
+    box-sizing: border-box;
+    /*Apply to all elements. With box-sizing: border-box, the padding and the board are included in the size specification, 
+    in contrast to box-sizing: content-box, which is set as default, where only the content is important. 
+    Border-box allows us to develop simpler designs and prevent errors. 
+    You can then easily determine the width of elements using %.*/
+}
+
+html {
+    min-height: 100%;   /*It is important to set when working with background images for body. It tells the browser, that
+    the min-heigt of our html body is the size of the full page, even without any content.*/
+    font-size: 0.625em; /*Browser standard value is usually 16px. We will set it now to 16px * 0.625em = 10px.*/
+}
+
+@media (min-width: 100em) { /*It is best practice to work with pixels or em for media query.*/
+    html {
+        font-size: 0.85em;  /*If the view is at full screen, increase the font-size*/
+    }
+}
+@media (min-width: 120em) {
+    html {
+        font-size: 0.9em;
+    }
+}
+@media (min-width: 140em) {
+    html {
+        font-size: 1.05em;
+    }
+}
+
+body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+
+    font-size: 1.6rem;
+
+    background-color: rgb(100, 100, 100); /*It is best practice that even if we use beckground-image, we still set a 
+    background-color, in case that the image has some issue and won't open properly. In that case the screen will not be
+    a plain white screen.*/
+
+    background-image:
+        linear-gradient(100deg, rgb(226, 29, 60) 50%, black 50%, rgba(0, 0, 0, 0) 100%),        /*Fourth layer. The 'cut' in the middle at 100deg.*/
+        url(../images/waves-cropped.svg),                                                       /*Third layer. Our designer waves.*/
+        linear-gradient(60deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%),     /*Second layer. In this step we just make our image a little bit darker.*/
+        url(../images/pexels-cesar-galeao-3289711-gray.jpg);            /*First layer of the page. It is the image of the bodybuilder*/
+    background-repeat: 
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        no-repeat;      /*The image should be projected only one time.*/
+    background-size:
+        auto auto, 
+        30% auto, 
+        100% 100%,
+        calc(50% + 20vh) auto;       /*On the horizontal the image should take 50% of the body + 20% of the 
+                                      viewport height (due to the fact that the "diagonal cut" has width to height aspect ratio of 1:5). 
+                                      Vertically we have to set it to auto due to scaling.*/
+    background-position:
+        0% 0%, 
+        100% 100%,
+        50% 50%,
+        100% 30%;
+
+    font-family: 'Montserrat', sans-serif;
+}
+@media (max-width: 68.5em) {
+    body {
+        background-image: url(../images/waves-white-cropped.svg);
+        background-color: rgb(226, 29, 60);
+        background-repeat: no-repeat;
+        background-size: 33vh auto;
+        background-position: 100% 100%;
+    }
+}
+@media (max-width: 44em) {
+    body {
+        background-image: none;
+    }
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.page {                 /*Due to the fact that putting the whole body of a page to display: flex is not the best idea (multiple browser bugs can occur),
+                        we define a div container and wrap the whole page in it.*/
+    display: flex;
+    flex-direction: row;
+    flex: 1 0 auto;
+    
+}
+@media (max-width: 68.5em) {
+    .page {
+        flex-direction: column;
+    }
+}
+.main-content {
+    flex: 0 0 40%;
+    display: flex;
+    flex-direction: column;
+    /*justify-content: space-between;   Due to the fact that we had to remove the footer element out of our main-content,
+    the whole design has to be adapted. Firstly there were 3 elements and space-between property was perfectly fine. Now
+    that there are just two, there would be a massive space between those two eleements. */
+}
+.countdown-col {
+    flex: 0 1 60%; /*it cannot grow larger, it may shrink, the desired size is 60%*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+header {
+    justify-content: flex-start;
+}
+.logo {
+    width: 27.5rem;
+    margin-top: 1.5rem;
+    margin-left: 1.5rem;
+}
+@media (max-width: 68.5em) {
+    .logo {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.main-offer {
+    margin: 7.5rem 1.5rem 10rem 1.5rem;
+    align-self: center;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+@media (max-width: 68.5em) {
+    .main-offer {
+        align-items: center;
+        margin-bottom: 3rem;
+    }
+}
+.main-heading {
+    margin-top: 0;
+    margin-bottom: 0;
+    /*margin-left: 50px;      Or we could just remove margin-left from .main-heading and button, and instead
+                            add 50px to the margin-left of the main container, that means to the .main-offer left margin*/
+    font-size: 2.8rem;
+    letter-spacing: 0.05em;
+    color: white;
+    font-weight: normal;
+    font-style: italic;
+    
+}
+@media (max-width: 68.5em) {
+    .main-heading {
+        text-align: center;
+    }
+}
+.main-heading > strong {        /*If <strong> elements are direct children of .main-heading div, then apply following:*/
+    text-transform: uppercase;
+}
+.main-offer-price {
+    font-size: 12.3rem;
+    display: block;
+    margin-top: 2rem;
+}
+
+.button {
+    display: block;         /*The more elegant solution is to set display to inline-block! With block element we have the width 
+                            of our element determinited and if we want to add more text to the button, it would not expand.
+                            With inline-block that's not an issue.*/
+    /*margin-left: 50px; */
+    margin-top: 5rem;
+    background-color: black;
+    width: 23.5rem;
+    height: 4.5rem;           /*Instead of working with height and line-heigt, the alternative to that is to work with padding,
+                             e.g. padding: 10px 20px; => padding top and bottom is 10px, and left and right is 20px*/
+    line-height: 4.5rem;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 2.3rem;
+    font-weight: 500;
+    border-radius: 2.3rem;
+    letter-spacing: 0.05em;
+}
+.button:hover {
+    background-color: rgb(40, 40, 40);
+}
+
+/*  Because we are working now with flexbox.
+.footer-container {
+    position: absolute;
+    bottom: 0;
+    width: 40%;
+} */
+.footer-text {
+    margin: 1.5rem 0 1.5rem 1.5rem;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.countdown-heading {
+    margin: 5rem 0 0 0;
+    color: white;
+    text-align: center;
+    font-size: 3rem;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.countdown-paragraph {
+    margin: 0;
+    color: white;
+    text-align: center;
+    font-size: 5.2rem;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.countdown-days {
+    font-weight: 800;
+    font-style: italic;
+}
